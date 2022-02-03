@@ -50,54 +50,33 @@ export const saveColorToServer = (colorToSave) => {
   };
 };
 
-const oldMainReducer = (currentState = { currentColor: ["255", "255", "255"], savedColors: [] }, action) => {
-  switch (action.type) {
-    case SET_RED:
-      return {
-        ...currentState,
-        currentColor: [action.newRed, currentState.currentColor[1], currentState.currentColor[2]]
-      };
-    case SET_GREEN:
-      return {
-        ...currentState,
-        currentColor: [currentState.currentColor[0], action.newGreen, currentState.currentColor[2]]
-      };
-    case SET_BLUE:
-      return {
-        ...currentState,
-        currentColor: [currentState.currentColor[0], currentState.currentColor[1], action.newBlue]
-      };
-    case SAVE_COLOR:
-      return {
-        savedColors: [...currentState.savedColors, action.color],
-        currentColor: ["255", "255", "255"],
-      };
-    default:
-      return currentState;
-  }
-};
+// const oldMainReducer = (currentState = { currentColor: ["255", "255", "255"], savedColors: [] }, action) => {
+//   switch (action.type) {
+//     case SET_RED:
+//       return {
+//         ...currentState,
+//         currentColor: [action.newRed, currentState.currentColor[1], currentState.currentColor[2]]
+//       };
+//     case SET_GREEN:
+//       return {
+//         ...currentState,
+//         currentColor: [currentState.currentColor[0], action.newGreen, currentState.currentColor[2]]
+//       };
+//     case SET_BLUE:
+//       return {
+//         ...currentState,
+//         currentColor: [currentState.currentColor[0], currentState.currentColor[1], action.newBlue]
+//       };
+//     case SAVE_COLOR:
+//       return {
+//         savedColors: [...currentState.savedColors, action.color],
+//         currentColor: ["255", "255", "255"],
+//       };
+//     default:
+//       return currentState;
+//   }
+// };
 
-
-const makeAnimal = (animalType) => {
-
-  const animal = {legs: true};
-
-  switch(animalType) {
-    case "dog":
-      animal.barks = true;
-      break;
-    case "cat":
-      animal.meows = true;
-      break;
-    default:
-      animal.unknown = true;
-  }
-
-  animal.isCool = "yes";
-
-  return animal;
-
-};
 
 const newMainReducer = combineReducers({
   currentColor: (state = ["255", "255", "255"], action) => {

@@ -32,7 +32,7 @@ class CaptureColor extends React.Component {
                     )}
                 </div>
                 <div id="saved-list">
-                    {allSavedColors.map(color => <ColorSquare colorArray={color} />)}
+                    {allSavedColors.map(color => <ColorSquare key={JSON.stringify(color)} colorArray={color} />)}
                 </div>
             </div>
         );
