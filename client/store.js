@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import loggerMiddleware from 'redux-logger';
 import thunkMiddleware from "redux-thunk";
 
@@ -32,6 +32,13 @@ export const saveColor = (color) => {
   };
 };
 
+export const fullColor = (theColor) => {
+  return {
+    type: SET_FULL_COLOR,
+    fullColor: theColor
+  }
+};
+
 export const saveColorToServer = (colorToSave) => {
   return async (dispatch) => {
     await axios.post("/data/new-color", {
@@ -43,7 +50,7 @@ export const saveColorToServer = (colorToSave) => {
   };
 };
 
-const reducer = (currentState = { currentColor: ["255", "255", "255"], savedColors: [] }, action) => {
+const oldMainReducer = (currentState = { currentColor: ["255", "255", "255"], savedColors: [] }, action) => {
   switch (action.type) {
     case SET_RED:
       return {
@@ -70,6 +77,55 @@ const reducer = (currentState = { currentColor: ["255", "255", "255"], savedColo
   }
 };
 
-const store = createStore(reducer, applyMiddleware(loggerMiddleware, thunkMiddleware));
+
+const makeAnimal = (animalType) => {
+
+  const animal = {legs: true};
+
+  switch(animalType) {
+    case "dog":
+      animal.barks = true;
+      break;
+    case "cat":
+      animal.meows = true;
+      break;
+    default:
+      animal.unknown = true;
+  }
+
+  animal.isCool = "yes";
+
+  return animal;
+
+};
+
+const newMainReducer = combineReducers({
+  currentColor: (state = ["255", "255", "255"], action) => {
+    switch (action.type) {
+      case SET_FULL_COLOR:
+        return action.fullColor;
+      case SET_RED:
+        return [action.newRed, state[1], state[2]];
+      case SET_GREEN:
+        return [state[0], action.newGreen, state[2]];
+      case SET_BLUE:
+        return [state[0], state[1], action.newBlue];
+      case SAVE_COLOR:
+        return ["255", "255", "255"];
+      default:
+        return state;
+    }
+  },
+  savedColors: (savedColorsCurrentState = [], action) => {
+    switch (action.type) {
+      case SAVE_COLOR:
+        return [...savedColorsCurrentState, action.color];
+      default:
+        return savedColorsCurrentState;
+    }
+  }
+});
+
+const store = createStore(newMainReducer, applyMiddleware(loggerMiddleware, thunkMiddleware));
 
 export default store;
