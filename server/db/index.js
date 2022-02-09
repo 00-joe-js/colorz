@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const db = new Sequelize("postgres://joe-alves:buttons@localhost:5432/colorz");
+const db = new Sequelize("postgres://localhost:5432/colorz");
 
 const ColorModel = db.define("color", {
     r: {
